@@ -287,7 +287,7 @@ const Home = () => {
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
           </div>
-          <a href={UNISWAP_BUY_LINK} className="btn" style={{paddingTop: 12, paddingBottom: 18}}>
+          <a href={UNISWAP_BUY_LINK} target="_blank" className="btn" style={{paddingTop: 12, paddingBottom: 18}}>
             <img src={UnicryptSvg} width={24} style={{top: 3, marginRight: 4}} /> Unicrypt Presale <i className="fal fa-arrow-right"></i>
             {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
           </a>
@@ -551,7 +551,7 @@ const Home = () => {
               </p>
               <p style={{ fontStyle: 'italic' }}>"If you invested $100 in SafeMoon at launch it would now be worth 8 million dollars."</p>
             </div>
-            <a href={UNISWAP_BUY_LINK} className="btn">
+            <a href={UNISWAP_BUY_LINK} target="_blank" className="btn">
               🦄 Unicrypt Presale <i className="fal fa-arrow-right"></i>
               {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
             </a>
