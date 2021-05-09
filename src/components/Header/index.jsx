@@ -65,8 +65,8 @@ const Header = () => {
           <nav id="n">
           <ul>
                 <li><Link to="/">Home</Link></li>
-                <li><a href={TELEGRAM_LINK} title="The most active social networks for the LOCC community">Telegram</a></li>
-                <li><a href="/orbit_paper.pdf" title="Lite Paper of the LOCC Protocol">Orbit Paper</a></li>
+                <li><a href={TELEGRAM_LINK} target="_blank" title="The most active social networks for the LOCC community">Telegram</a></li>
+                <li><a href="/orbit_paper.pdf" target="_blank" title="Lite Paper of the LOCC Protocol">Orbit Paper</a></li>
                 {/* <li><a href="#" title="Tutorial about how to buy and use the LOCC token">How to Buy</a></li> */}
                 <li><a href="https://github.com/Low-Orbit-Crypto-Cannon/locc-contracts" title="Open-Source code of the LOCC Contracts" target="_blank">LOCC Contract</a></li>
                 <li><a href="/Low_Orbit_Crypto_Cannon_Smart_Contract_Security_Audit_Report.pdf" title="Smart-Contracts Audit of LOCC Protocol" target="_blank">Audits</a></li>
