@@ -5,13 +5,6 @@ import { GITHUB_LINK, MEDIUM_LINK, TELEGRAM_LINK, TWITTER_LINK, UNISWAP_BUY_LINK
 
 import LoccLogo from 'src/assets/images/logo-locc.svg';
 
-const NETWORK_LABELS = {
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan',
-};
-
 const Header = () => {
   const body = document.querySelector('body');
 
@@ -78,7 +71,7 @@ const Header = () => {
                 <li><a href="https://github.com/Low-Orbit-Crypto-Cannon/locc-contracts" title="Open-Source code of the LOCC Contracts" target="_blank">LOCC Contract</a></li>
                 <li><a href="/Low_Orbit_Crypto_Cannon_Smart_Contract_Security_Audit_Report.pdf" title="Smart-Contracts Audit of LOCC Protocol" target="_blank">Audits</a></li>
                 <li>
-                  <a href={UNISWAP_BUY_LINK} target="_blank">
+                  <a href={UNISWAP_BUY_LINK}>
                     <span>Buy $LOCC <i className="fal fa-arrow-right"></i></span>
                   </a>
                 </li>

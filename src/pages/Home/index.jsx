@@ -278,12 +278,11 @@ const Home = () => {
 
           <div className="tx">
             <p>
-              Low Orbit Crypto Cannon is a crypto deflationary token made for the community, owned by the community, with a fair pre-sale on which everyone can participate.
-              <br/>
-              <p style={{marginTop:10}}>
-              Ruled by simple, yet powerful and efficient smart contracts on the Ethereum blockchain: fees are generated from each trades, partially burned, then one staker Astronaut is selected for Propulsion each 138 ETH blocks,{' '}
-              <span style={{ fontWeight: 'bold', color: '#f4cf63' }}>making you win the entire collected fees.</span>
-              </p>
+              Low Orbit Crypto Cannon is a crypto deflationary token made for the community, owned by the community, with a fair pre-sale in which everyone can participate.
+            </p>
+            <p style={{ marginTop: 10 }}>
+              Ruled by simple, yet powerful and efficient smart contracts on the Ethereum blockchain: Fees are generated from each trade, partially burned, and then one staking Astronaut is selected for propulsion every 138 ETH blocks.
+              <span style={{ fontWeight: 'bold', color: '#f4cf63' }}>This lucky Astronaut receives all of the collected fees!</span>
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
           </div>
