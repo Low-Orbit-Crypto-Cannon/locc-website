@@ -12,12 +12,12 @@ export const LOCC_TOKEN_TOTAL_SUPPLY = 1000;
 export const LOCC_TOKEN_DECIMALS = 8;
 
 export const LOCC_TOKEN = {
-  [ChainId.MAINNET]: '',
+  [ChainId.MAINNET]: '0x556938621C19e5eae58C94a806da9d237b969bd8',
   [ChainId.ROPSTEN]: '0x6ef15d1ed7ae15113bed08a548844e0991e62f4f',
 };
 
 export const LOCC_PROPULSOR = {
-  [ChainId.MAINNET]: '',
+  [ChainId.MAINNET]: '0x5d68FE6E6FF4f869B689132Cd8fecC5b6418b839',
   [ChainId.ROPSTEN]: '0xb3EA82a250B7E4f11e445246deF72678114db452',
 };
 

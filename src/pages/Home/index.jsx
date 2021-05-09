@@ -66,7 +66,7 @@ const Home = () => {
       setPrice(price);
 
       setHodlers(data.etherscan.addresses);
-      setMarketCap(price * totalSupplyFormat);
+      setMarketCap(price ? (price * totalSupplyFormat) : (2500 * totalSupplyFormat));
       setBurned(LOCC_TOKEN_TOTAL_SUPPLY - totalSupplyFormat);
     }
   };
@@ -308,7 +308,10 @@ const Home = () => {
               </div>
               <div>
                 <div className="sub">LOCC Price</div>
-                <strong className="c-y">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}</strong>
+                <strong className="c-y">
+                  { !price && '~ $2500.00'}
+                  { price && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}
+                </strong>
               </div>
             </li>
             <li>
@@ -326,7 +329,9 @@ const Home = () => {
               </div>
               <div>
                 <div className="sub">Market Cap</div>
-                <strong className="c-p">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(marketCap)}</strong>
+                <strong className="c-p">
+                  { marketCap && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(marketCap)}
+                </strong>
               </div>
             </li>
             <li>
