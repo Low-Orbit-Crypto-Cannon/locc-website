@@ -96,4 +96,4 @@ export const TWITTER_LINK = 'https://twitter.com/loworbit_crypto';
 export const MEDIUM_LINK = 'https://medium.com/@loworbit/about';
 export const GITHUB_LINK = 'https://github.com/Low-Orbit-Crypto-Cannon';
 
-export const UNISWAP_BUY_LINK = '#';
+export const UNISWAP_BUY_LINK = 'https://unicrypt.network/amm/uni/ilo/0x5B593BA0c70aAc65714C5dd6BFF36C7e4a23ab25';

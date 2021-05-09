@@ -21,6 +21,7 @@ import axios from 'axios';
 import SweepSound from 'src/assets/sounds/sweep.mp3';
 import MoonSound from 'src/assets/sounds/moon.mp3';
 
+import UnicryptSvg from 'src/assets/images/unicrypt.svg';
 import PlanetBg from 'src/assets/images/planet.png';
 import WinnerSvg from 'src/assets/images/winner.svg';
 import MoonImg from 'src/assets/images/moon.png';
@@ -286,8 +287,9 @@ const Home = () => {
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
           </div>
-          <a href={UNISWAP_BUY_LINK} className="btn">
-            Buy $LOCC <i className="fal fa-arrow-right"></i>
+          <a href={UNISWAP_BUY_LINK} className="btn" style={{paddingTop: 12, paddingBottom: 18}}>
+            <img src={UnicryptSvg} width={24} style={{top: 3, marginRight: 4}} /> Unicrypt Presale <i className="fal fa-arrow-right"></i>
+            {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
           </a>
 
           <Link id="propulsator-link" to="/staking" className="btn-propulsor go" onMouseEnter={() => soundEnabled && play()} onMouseLeave={stop}>
@@ -550,7 +552,8 @@ const Home = () => {
               <p style={{ fontStyle: 'italic' }}>"If you invested $100 in SafeMoon at launch it would now be worth 8 million dollars."</p>
             </div>
             <a href={UNISWAP_BUY_LINK} className="btn">
-              Buy $LOCC <i className="fal fa-arrow-right"></i>
+              🦄 Unicrypt Presale <i className="fal fa-arrow-right"></i>
+              {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
             </a>
           </div>
         </div>
