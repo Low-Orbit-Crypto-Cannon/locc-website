@@ -236,15 +236,15 @@ const Staking = () => {
     <main className="staking-wrapper">
       <div id="pg">
         <div className="ct" style={{ marginTop: -50 }}>
-          <div className="sub">Low Orbit Crypto Cannon Propulstion Staking</div>
+          <div className="sub">Low Orbit Crypto Cannon Propulsion Staking</div>
           <h1>Ready for the next propulsion ?</h1>
           <div className="p">
             <p>
               Stake your <span style={{ fontWeight: 600 }}>LOCC</span> on the Propulsor Contract and take your chance to participate in the next propulsion wave,
               <br />
-              <span style={{ fontWeight: 600 }}>you might be the next astronaut who will win all of the wave collected fees</span>.
+              <span style={{ fontWeight: 600 }}>you might be the next astronaut who will win all of the wave collected fees.</span>.
               <br/>
-              Everyone have equal chance to win!
+              Everyone has an equal chance to win!
             </p>
             <p style={{ marginTop: 8, fontStyle: 'italic' }}>
               If you're the winner, tokens will be directly sent to your wallet.
@@ -298,7 +298,7 @@ const Staking = () => {
               <div className="dep">
                 <fieldset>
                   <label htmlFor="depp" className="ti">
-                    Enter an amount {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
+                    Enter Amount to Stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
                   </label>
                   <input id="depp" className="in inn" name="amount" type="number" placeholder="0.00000000"
                     disabled={!account} value={amount} onChange={e => onAmountChange(e)} />
