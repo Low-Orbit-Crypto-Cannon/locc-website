@@ -608,7 +608,8 @@ const Home = () => {
                 How to buy the LOCC token? <i className="fal fa-plus"></i>
               </h3>
               <div className="p">
-                <p>You can buy the Low Orbit Crypto Cannon Token known as LOCC from Uniswap or any of the centralized exchanges where $LOCC is listed.</p>
+                <p>You can buy the Low Orbit Crypto Cannon Token known as LOCC from Uniswap or any of the centralized exchanges where $LOCC is listed.<br/>
+                $LOCC token is deployed on the Ethereum network, token hash: <b>0x556938621C19e5eae58C94a806da9d237b969bd8</b>, <a target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }} href="https://etherscan.io/token/0x556938621C19e5eae58C94a806da9d237b969bd8">etherscan link</a></p>
               </div>
             </li>
           </ul>
