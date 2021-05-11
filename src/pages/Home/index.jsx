@@ -43,6 +43,15 @@ const MoonSoundWrapper = () => {
 };
 
 const Home = () => {
+  /************* anchors **************/
+  const currentLocation = window.location.href;
+  const hasAnchor = currentLocation.includes('/#');
+  if (hasAnchor) {
+    const anchorId = `${currentLocation.substring(currentLocation.indexOf('#') + 1)}`;
+    const anchorEl = document.getElementById(anchorId);
+    if (anchorEl) anchorEl.scrollIntoView({ behavior: 'smooth' });
+  }
+
   const { account, chainId, library } = useActiveWeb3React();
 
   const tokenContractAddr = LOCC_TOKEN[chainId];
@@ -264,7 +273,7 @@ const Home = () => {
 
   return (
     <main>
-      <div id="ix">
+      <div id="hero">
         <div className="ct">
           <div className="sub">Welcome to</div>
           <h1>
@@ -346,7 +355,7 @@ const Home = () => {
           </ul>
         </div>
       </div>
-      <div id="w">
+      <div id="propulsion">
         <div className="ct">
           <div className="sub">Next Propulsion Wave</div>
           <time id="timer">
@@ -417,7 +426,7 @@ const Home = () => {
           <img className="star" src={StarGif} />
         </div>
       </div>
-      <div id="rm">
+      <div id="roadmap">
         <div className="ct">
           <div className="rmc">
             <div className="l">
@@ -498,7 +507,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div id="mo">
+      <div id="tokenomics">
         <div className="ct">
           <div className="moc">
             <div className="sub">Tokenomics of LOCC</div>
@@ -612,7 +621,15 @@ const Home = () => {
               </h3>
               <div className="p">
                 <p>
-                  You will be able to acquire $LOCC from <strong>Wednesday May 11, 2021 at 18:00 UTC</strong> during our presale on the Unicrypt platform.
+                  You will be able to acquire $LOCC from Wednesday May 12, 2021 at 18:00 UTC{' '}
+                  <span style={{ fontSize: '0.85em' }}>
+                    (
+                    <a href="https://etherscan.io/block/countdown/12421121" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                      block #12421121
+                    </a>
+                    )
+                  </span>{' '}
+                  during our presale on the Unicrypt platform.
                   <br />
                   You can access our 🦄 Unicrypt Presale by{' '}
                   <a href={UNICRYPT_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
@@ -663,7 +680,7 @@ const Home = () => {
                     <li style={{ marginLeft: 42, marginTop: 0 }}>Transfer: 54899 GAS</li>
                   </ul>
                 </p>
-                <p style={{marginTop: 12}}>
+                <p style={{ marginTop: 12 }}>
                   Low Orbit Propulsor Contract <span style={{ fontSize: '0.85em' }}>(LowOrbitPropulsor)</span>:
                   <ul style={{ marginTop: 0, listStyle: 'initial' }}>
                     <li style={{ marginLeft: 42, marginTop: 0 }}>Deposit: 144662 GAS</li>
@@ -674,15 +691,39 @@ const Home = () => {
             </li>
 
             <li>
+              <h3 className="open">
+                Who is behind this project? <i className="fal fa-plus"></i>
+              </h3>
+              <div className="p">
+                <p>
+                  We are a team of 5 crypto-veterans, composed as follows:
+                  <ul style={{ marginTop: 0, listStyle: 'initial' }}>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>2 &nbsp;blockchain engineers <span style={{ fontSize: '0.85em' }}>(evm, solidity)</span></li>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>1 &nbsp;dApp developer <span style={{ fontSize: '0.85em' }}>(web3, react)</span></li>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>1 &nbsp;graphic designer</li>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>1 &nbsp;marketing specialist</li>
+                  </ul>
+                </p>
+                <p style={{ marginTop: 12, fontWeight: 'bold' }}>
+                  We have successfully completed an Identity Verification Procedure (KYC) 🔍 performed by the Unicrypt platform.
+                </p>
+              </div>
+            </li>
+
+            <li>
               <h3 className="open faq-shake">
                 Why my screen is shaking in all directions? <i className="fal fa-plus"></i>
               </h3>
               <div className="p">
                 <p>
-                  Your screen and possibly the very chair you are sitting in, will begin to shake uncontrollably when one lucky staker is about to win the entire collected fees from the Low Orbit Propulsor Contract.
+                  Your screen and possibly the very chair you are sitting in, will begin to shake uncontrollably when one lucky staker is about to win the entire collected fees from the
+                  Low Orbit Propulsor Contract.
                 </p>
-                <p style={{marginTop: 12, fontWeight: 'bold'}}>
-                  Have you never had the chance to see a propulsion live? <a href="https://imgur.com/a/NxPyPUm" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>Click here to see what it looks like.</a>
+                <p style={{ marginTop: 12, fontWeight: 'bold' }}>
+                  Have you never had the chance to see a propulsion live?{' '}
+                  <a href="https://imgur.com/a/NxPyPUm" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    Click here to see what it looks like.
+                  </a>
                 </p>
               </div>
             </li>

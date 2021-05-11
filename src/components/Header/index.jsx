@@ -57,7 +57,7 @@ const Header = () => {
 
       <div className="b">
         <div className="l">
-          <HashLink to="/#ix" className="lo">
+          <HashLink smooth to="/#hero" className="lo">
             <img src={LoccLogo} alt="LOCC Logo" />
           </HashLink>
         </div>
@@ -65,8 +65,8 @@ const Header = () => {
         <div className="r">
           <nav id="n">
           <ul>
-                <li><HashLink to="/#ix">Home</HashLink></li>
-                <li><HashLink to="/#faq">F.A.Q</HashLink></li>
+                <li><HashLink smooth to="/#hero">Home</HashLink></li>
+                <li><HashLink smooth to="/#faq">F.A.Q</HashLink></li>
                 <li><a href={TELEGRAM_LINK} target="_blank" title="The most active social networks for the LOCC community">Telegram</a></li>
                 <li><a href="/orbit_paper.pdf" target="_blank" title="Lite Paper of the LOCC Protocol">Orbit Paper</a></li>
                 {/* <li><a href="#" title="Tutorial about how to buy and use the LOCC token">How to Buy</a></li> */}
