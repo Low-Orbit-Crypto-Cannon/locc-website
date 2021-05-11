@@ -287,6 +287,7 @@ animation:astro .45s infinite ease-out;}
 #faq h3:before{content:'';width:calc(80px + 20 * (100vw - 320px) / 1080);height:3px;position:absolute;left:0;bottom:-1px;animation:befh 1s infinite linear;}
 #faq .p{display:none;line-height:1.7;font-size:calc(13px + 2 * (100vw - 320px) / 1080);}
 #faq h3.open + .p{display:block;}
+#faq .faq-shake {animation:astro .3s infinite ease-in-out;}
 
 @keyframes befh{
     0%{background-color:#f4cf63;}

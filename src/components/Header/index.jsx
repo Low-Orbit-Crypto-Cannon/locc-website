@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChainId } from '@uniswap/sdk';
-import { GITHUB_LINK, MEDIUM_LINK, TELEGRAM_LINK, TWITTER_LINK, UNISWAP_BUY_LINK } from 'src/constants';
+import { HashLink } from 'react-router-hash-link';
+import { GITHUB_LINK, MEDIUM_LINK, TELEGRAM_LINK, TWITTER_LINK, UNICRYPT_BUY_LINK } from 'src/constants';
 
 import UnicryptSvg from 'src/assets/images/unicrypt.svg';
 import LoccLogo from 'src/assets/images/logo-locc.svg';
@@ -57,22 +57,23 @@ const Header = () => {
 
       <div className="b">
         <div className="l">
-          <Link to="/" className="lo">
+          <HashLink to="/#ix" className="lo">
             <img src={LoccLogo} alt="LOCC Logo" />
-          </Link>
+          </HashLink>
         </div>
 
         <div className="r">
           <nav id="n">
           <ul>
-                <li><Link to="/">Home</Link></li>
+                <li><HashLink to="/#ix">Home</HashLink></li>
+                <li><HashLink to="/#faq">F.A.Q</HashLink></li>
                 <li><a href={TELEGRAM_LINK} target="_blank" title="The most active social networks for the LOCC community">Telegram</a></li>
                 <li><a href="/orbit_paper.pdf" target="_blank" title="Lite Paper of the LOCC Protocol">Orbit Paper</a></li>
                 {/* <li><a href="#" title="Tutorial about how to buy and use the LOCC token">How to Buy</a></li> */}
                 <li><a href="https://github.com/Low-Orbit-Crypto-Cannon/locc-contracts" title="Open-Source code of the LOCC Contracts" target="_blank">LOCC Contract</a></li>
                 <li><a href="/Low_Orbit_Crypto_Cannon_Smart_Contract_Security_Audit_Report.pdf" title="Smart-Contracts Audit of LOCC Protocol" target="_blank">Audits</a></li>
                 <li>
-                  <a href={UNISWAP_BUY_LINK} target="_blank">
+                  <a href={UNICRYPT_BUY_LINK} target="_blank">
                     <span>
                      🦄 Unicrypt Presale <i className="fal fa-arrow-right"></i>
                       {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}

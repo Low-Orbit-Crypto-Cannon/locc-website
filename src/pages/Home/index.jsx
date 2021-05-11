@@ -13,6 +13,7 @@ import {
   LOCC_API_SUMMARY_ENDPOINT,
   UNISWAP_BUY_LINK,
   TELEGRAM_LINK,
+  UNICRYPT_BUY_LINK,
 } from 'src/constants';
 import { utils } from 'ethers';
 import { getEtherscanLink, shortenAddress } from 'src/utils';
@@ -38,7 +39,7 @@ const MoonSoundWrapper = () => {
     if (!soundEnabled) stop();
   }, [soundEnabled]);
 
-  return <img src={AstroRmImg} onClick={() => soundEnabled && play()} style={{cursor: 'pointer'}} />;
+  return <img src={AstroRmImg} onClick={() => soundEnabled && play()} style={{ cursor: 'pointer' }} />;
 };
 
 const Home = () => {
@@ -67,7 +68,7 @@ const Home = () => {
       setPrice(price);
 
       setHodlers(data.etherscan.addresses);
-      setMarketCap(price ? (price * totalSupplyFormat) : (2500 * totalSupplyFormat));
+      setMarketCap(price ? price * totalSupplyFormat : 2500 * totalSupplyFormat);
       setBurned(LOCC_TOKEN_TOTAL_SUPPLY - totalSupplyFormat);
     }
   };
@@ -278,17 +279,16 @@ const Home = () => {
           </h1>
 
           <div className="tx">
-            <p>
-              Low Orbit Crypto Cannon is a crypto deflationary token made for the community, owned by the community, with a fair pre-sale in which everyone can participate.
-            </p>
+            <p>Low Orbit Crypto Cannon is a crypto deflationary token made for the community, owned by the community, with a fair pre-sale in which everyone can participate.</p>
             <p style={{ marginTop: 10 }}>
-              Ruled by simple, yet powerful and efficient smart contracts on the Ethereum blockchain: Fees are generated from each trade, partially burned, and then one staking Astronaut is selected for propulsion every 138 ETH blocks.
+              Ruled by simple, yet powerful and efficient smart contracts on the Ethereum blockchain: Fees are generated from each trade, partially burned, and then one staking
+              Astronaut is selected for propulsion every 138 ETH blocks. &nbsp;
               <span style={{ fontWeight: 'bold', color: '#f4cf63' }}>This lucky Astronaut receives all of the collected fees!</span>
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
           </div>
-          <a href={UNISWAP_BUY_LINK} target="_blank" className="btn" style={{paddingTop: 12, paddingBottom: 18}}>
-            <img src={UnicryptSvg} width={24} style={{top: 3, marginRight: 4}} /> Unicrypt Presale <i className="fal fa-arrow-right"></i>
+          <a href={UNICRYPT_BUY_LINK} target="_blank" className="btn" style={{ paddingTop: 12, paddingBottom: 18 }}>
+            <img src={UnicryptSvg} width={24} style={{ top: 3, marginRight: 4 }} /> Unicrypt Presale <i className="fal fa-arrow-right"></i>
             {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
           </a>
 
@@ -311,8 +311,8 @@ const Home = () => {
               <div>
                 <div className="sub">LOCC Price</div>
                 <strong className="c-y">
-                  { !price && '~ $2500.00'}
-                  { price && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}
+                  {!price && '~ $2500.00'}
+                  {price && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}
                 </strong>
               </div>
             </li>
@@ -331,9 +331,7 @@ const Home = () => {
               </div>
               <div>
                 <div className="sub">Market Cap</div>
-                <strong className="c-p">
-                  { marketCap && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(marketCap)}
-                </strong>
+                <strong className="c-p">{marketCap && new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(marketCap)}</strong>
               </div>
             </li>
             <li>
@@ -551,7 +549,7 @@ const Home = () => {
               </p>
               <p style={{ fontStyle: 'italic' }}>"If you invested $100 in SafeMoon at launch it would now be worth 8 million dollars."</p>
             </div>
-            <a href={UNISWAP_BUY_LINK} target="_blank" className="btn">
+            <a href={UNICRYPT_BUY_LINK} target="_blank" className="btn">
               🦄 Unicrypt Presale <i className="fal fa-arrow-right"></i>
               {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
             </a>
@@ -571,15 +569,18 @@ const Home = () => {
               <div className="p">
                 <p>
                   We employ such simple functions, strong and powerful: each time a transfer occurs on the $LOCC ERC-20 token or any buy/sell occurring over Uniswap:
-                  <dl>
-                    <dd>- 5% of the amount is burned from the supply.</dd>
-                    <dd>- 5% of the amount is sent to the Low Orbit Propulsor Contract for the next propulsion.</dd>
-                  </dl>
-                  The propulsion engine then starts to power up and load with the tokens collected from the transfer fees, ready to propel one of our hodlers into Orbit when the next
-                  propulsion will trigger.
+                  <ul style={{ marginTop: 0, listStyle: 'initial' }}>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>5% of the amount is burned from the supply 🔥</li>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>5% of the amount is sent to the Low Orbit Propulsor Contract for the next propulsion 🚀</li>
+                  </ul>
+                </p>
+                <p style={{ marginTop: 12 }}>
+                  Every 138 ETH blocks <span style={{ fontSize: '0.85em' }}>(about 30 minutes)</span>, the Low Orbit Propulsor Contract starts to power up and loads with the tokens
+                  collected from the transfer fees, ready to propel one of our hodlers into Orbit when the next propulsion will trigger.
                 </p>
               </div>
             </li>
+
             <li>
               <h3 className="open">
                 What is the Low Orbit Propulsor Contract? <i className="fal fa-plus"></i>
@@ -588,14 +589,15 @@ const Home = () => {
                 <p>The Low Orbit Propulsor Contract is a smart-contract that collect fees each time a transfer or a trade occurs on the $LOCC token.</p>
               </div>
             </li>
+
             <li>
               <h3 className="open">
-                How to participate in the next propulsion wave? <i className="fal fa-plus"></i>
+                How to participate in the next Propulsions Waves? <i className="fal fa-plus"></i>
               </h3>
               <div className="p">
                 <p>
-                  To be able to join propulsion waves, and potentially win all the collected fees from trades and transfers, you need to stake a minimum of{' '}
-                  <span style={{ fontWeight: 'bold' }}>{minStakingToBePropelled} $LOCC</span> in the Low Orbit Propulsor Contract on the{' '}
+                  In order to participate in the next propulsions, and potentially win all the fees 🎉 collected by the Low Orbit Propulsor Contract, the only thing you have to do is to
+                  stake a minimum of <span style={{ fontWeight: 'bold' }}>{minStakingToBePropelled} $LOCC</span> through the{' '}
                   <Link to="/staking" style={{ color: '#007bff', textDecoration: 'underline' }}>
                     staking page
                   </Link>
@@ -603,13 +605,85 @@ const Home = () => {
                 </p>
               </div>
             </li>
+
             <li>
               <h3 className="open">
-                How to buy the LOCC token? <i className="fal fa-plus"></i>
+                How to buy the $LOCC token? <i className="fal fa-plus"></i>
               </h3>
               <div className="p">
-                <p>You can buy the Low Orbit Crypto Cannon Token known as LOCC from Uniswap or any of the centralized exchanges where $LOCC is listed.<br/>
-                $LOCC token is deployed on the Ethereum network, token hash: <b>0x556938621C19e5eae58C94a806da9d237b969bd8</b>, <a target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }} href="https://etherscan.io/token/0x556938621C19e5eae58C94a806da9d237b969bd8">etherscan link</a></p>
+                <p>
+                  You will be able to acquire $LOCC from <strong>Wednesday May 11, 2021 at 18:00 UTC</strong> during our presale on the Unicrypt platform.
+                  <br />
+                  You can access our 🦄 Unicrypt Presale by{' '}
+                  <a href={UNICRYPT_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    clicking here
+                  </a>
+                  .
+                </p>
+
+                <p style={{ marginTop: 12 }}>
+                  Once the presale is completed, the Unicrypt platform will automatically create our Uniswap pool.
+                  <br />
+                  You will then be able to purchase $LOCC directly from Uniswap. It will also be possible to purchase $LOCC from CEX partners few days later.
+                </p>
+
+                <p style={{ marginTop: 12 }}>
+                  ⚡ The $LOCC token is deployed on the Ethereum network, token hash is{' '}
+                  <a href={getEtherscanLink(chainId, LOCC_TOKEN[chainId], 'token')} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    0x556938621C19e5eae58C94a806da9d237b969bd8
+                  </a>
+                  .<br />
+                </p>
+
+                <p style={{ marginTop: 12 }}>
+                  <span style={{ fontStyle: 'italic' }}>The maximum number of $LOCC is 1000 but don't worry it's a divisible asset.</span>
+                </p>
+              </div>
+            </li>
+
+            <li>
+              <h3 className="open">
+                How much liquidity will be locked? <i className="fal fa-plus"></i>
+              </h3>
+              <div className="p">
+                <p>
+                  <strong>60%</strong> of the raised funds will be locked for <strong>one year</strong>.
+                </p>
+              </div>
+            </li>
+
+            <li>
+              <h3 className="open">
+                What are the gas prices to interact with our contracts? <i className="fal fa-plus"></i>
+              </h3>
+              <div className="p">
+                <p>
+                  Low Orbit Crypto Cannon Token <span style={{ fontSize: '0.85em' }}>(LowOrbitERC20)</span>:
+                  <ul style={{ marginTop: 0, listStyle: 'initial' }}>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>Transfer: 54899 GAS</li>
+                  </ul>
+                </p>
+                <p style={{marginTop: 12}}>
+                  Low Orbit Propulsor Contract <span style={{ fontSize: '0.85em' }}>(LowOrbitPropulsor)</span>:
+                  <ul style={{ marginTop: 0, listStyle: 'initial' }}>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>Deposit: 144662 GAS</li>
+                    <li style={{ marginLeft: 42, marginTop: 0 }}>Withdraw: 67930 GAS</li>
+                  </ul>
+                </p>
+              </div>
+            </li>
+
+            <li>
+              <h3 className="open faq-shake">
+                Why my screen is shaking in all directions? <i className="fal fa-plus"></i>
+              </h3>
+              <div className="p">
+                <p>
+                  Your screen and possibly the very chair you are sitting in, will begin to shake uncontrollably when one lucky staker is about to win the entire collected fees from the Low Orbit Propulsor Contract.
+                </p>
+                <p style={{marginTop: 12, fontWeight: 'bold'}}>
+                  Have you never had the chance to see a propulsion live? <a href="https://imgur.com/a/NxPyPUm" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>Click here to see what it looks like.</a>
+                </p>
               </div>
             </li>
           </ul>
