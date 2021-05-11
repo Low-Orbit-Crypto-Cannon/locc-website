@@ -19,7 +19,6 @@ import { utils } from 'ethers';
 import { getEtherscanLink, shortenAddress } from 'src/utils';
 import axios from 'axios';
 
-import SweepSound from 'src/assets/sounds/sweep.mp3';
 import MoonSound from 'src/assets/sounds/moon.mp3';
 
 import UnicryptSvg from 'src/assets/images/unicrypt.svg';
@@ -262,15 +261,6 @@ const Home = () => {
     return () => clearInterval(refreshInterval);
   }, [account, chainId]);
 
-  /************* sound **************/
-
-  const [play, { stop }] = useSound(SweepSound, { playbackRate: 1.35, volume: 0.6, interrupt: true });
-
-  const soundEnabled = useSelector(state => state.app.soundEnabled);
-  useEffect(() => {
-    if (!soundEnabled) stop();
-  }, [soundEnabled]);
-
   return (
     <main>
       <div id="hero">
@@ -301,7 +291,7 @@ const Home = () => {
             {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
           </a>
 
-          <Link id="propulsator-link" to="/staking" className="btn-propulsor go" onMouseEnter={() => soundEnabled && play()} onMouseLeave={stop}>
+          <Link id="propulsator-link" to="/staking" className="btn-propulsor go">
             Propulsor 🚀 <i className="fal fa-arrow-right"></i>
           </Link>
         </div>
