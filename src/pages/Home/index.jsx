@@ -7,7 +7,7 @@ import { usePropulsorContract, useTokenContract } from 'src/hooks/useContract';
 import {
   LOCC_TOKEN_TOTAL_SUPPLY,
   LOCC_TOKEN,
-  LOCC_PROPULSOR,
+  LOCC_PROPULSOR_V2,
   LOCC_TOKEN_DECIMALS,
   AVERAGE_BLOCK_TIME_IN_SECS,
   LOCC_API_SUMMARY_ENDPOINT,
@@ -58,7 +58,7 @@ const Home = () => {
   const tokenContractAddr = LOCC_TOKEN[chainId];
   const tokenContract = useTokenContract(tokenContractAddr);
 
-  const propulsorContractAddr = LOCC_PROPULSOR[chainId];
+  const propulsorContractAddr = LOCC_PROPULSOR_V2[chainId];
   const propulsorContract = usePropulsorContract(propulsorContractAddr);
 
   /************* stats **************/
@@ -611,7 +611,7 @@ const Home = () => {
               </h3>
               <div className="p">
                 <p>
-                  You can buy $LOCC directly from 🦄 Uniswap V2 by <a href={UNISWAP_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>clicking here</a>. ❗ <span style={{fontWeight: 'bold'}}>You need to set your slippage to <span style={{textDecoration: 'underline'}}>at least 12%</span></span>.<br/>
+                  You can buy $LOCC directly from 🦄 Uniswap V2 by <a href={UNISWAP_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>clicking here</a>.  <span style={{fontWeight: 'bold'}}>You need to set your slippage to <span style={{textDecoration: 'underline'}}>at least 12%</span></span>.<br/>
                   You can view the live statistics of the $LOCC token on our <a href="https://www.dextools.io/app/uniswap/pair-explorer/0xc12051d9c41d99b01906cf53d9f40af8026b9021" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>DexTools page</a>.
                 </p>
 

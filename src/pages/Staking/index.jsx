@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLoccBalance } from 'src/hooks/useLoccBalance';
-import { LOCC_TOKEN_DECIMALS, LOCC_TOKEN, LOCC_PROPULSOR } from 'src/constants';
+import { LOCC_TOKEN_DECIMALS, LOCC_TOKEN, LOCC_PROPULSOR_V2, LOCC_PROPULSOR_V1 } from 'src/constants';
 import { useTokenContract, usePropulsorContract } from 'src/hooks/useContract';
 import { useActiveWeb3React } from 'src/hooks';
 import { utils } from 'ethers';
@@ -18,30 +18,39 @@ const Staking = () => {
   const tokenContractAddr = LOCC_TOKEN[chainId];
   const tokenContract = useTokenContract(tokenContractAddr);
 
-  const propulsorContractAddr = LOCC_PROPULSOR[chainId];
-  const propulsorContract = usePropulsorContract(propulsorContractAddr);
+  const propulsorV2ContractAddr = LOCC_PROPULSOR_V2[chainId];
+  const propulsorV2Contract = usePropulsorContract(propulsorV2ContractAddr);
 
+  const propulsorV1ContractAddr = LOCC_PROPULSOR_V1[chainId];
+  const propulsorV1Contract = usePropulsorContract(propulsorV1ContractAddr);
+
+  const [amountToMigrate, setAmountToMigrate] = useState(0);
   const [stakedAmount, setStakedAmount] = useState(0);
   const [earnedAmount, setEarnedAmount] = useState(0);
   const [minStakingToBePropelled, setMinStakingToBePropelled] = useState(0);
 
   const refreshEarnedAmount = () => {
-    propulsorContract.getEarnedAmountByAddr(account).then(earnedAmount => {
+    propulsorV2Contract.getEarnedAmountByAddr(account).then(earnedAmount => {
       const earnedAmountFormat = parseFloat(utils.formatUnits(earnedAmount, 18));
       setEarnedAmount(earnedAmountFormat);
     });
   }
 
   const refreshStakingInfos = () => {
-    propulsorContract.getMinStakingToBePropelled().then(minStakingToBePropelled => {
+    propulsorV2Contract.getMinStakingToBePropelled().then(minStakingToBePropelled => {
       const minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
       setMinStakingToBePropelled(minStakingToBePropelledFormat);
     });
 
     if (account) {
-      propulsorContract.getStakedAmountByAddr(account).then(stakedAmount => {
+      propulsorV2Contract.getStakedAmountByAddr(account).then(stakedAmount => {
         const stakedAmountFormat = parseFloat(utils.formatUnits(stakedAmount, 18));
         setStakedAmount(stakedAmountFormat);
+      });
+
+      propulsorV1Contract.getStakedAmountByAddr(account).then(amountToMigrate => {
+        const amountToMigrateFormat = parseFloat(utils.formatUnits(amountToMigrate, 18));
+        setAmountToMigrate(amountToMigrateFormat);
       });
   
       refreshEarnedAmount();
@@ -56,7 +65,7 @@ const Staking = () => {
 
   const checkContractAllowance = async () => {
     setIsDepositLoading(true);
-    const allowance = await tokenContract.allowance(account, propulsorContract.address);
+    const allowance = await tokenContract.allowance(account, propulsorV2Contract.address);
     const allowanceFormat = utils.formatUnits(allowance, 18);
 
     const contractAllowed = parseFloat(allowanceFormat) !== 0;
@@ -69,7 +78,7 @@ const Staking = () => {
 
     try {
       setIsDepositLoading(true);
-      const approveTx = await tokenContract.approve(propulsorContract.address, wei);
+      const approveTx = await tokenContract.approve(propulsorV2Contract.address, wei);
       const approveTxWait = approveTx.wait();
 
       toast.promise(
@@ -107,7 +116,7 @@ const Staking = () => {
 
     try {
       setIsDepositLoading(true);
-      const depositTx = await propulsorContract.deposit(wei);
+      const depositTx = await propulsorV2Contract.deposit(wei);
       const depositTxWait = depositTx.wait();
 
       toast.promise(
@@ -140,6 +149,43 @@ const Staking = () => {
     }
   };
 
+  /************* migrate **************/
+
+  const [isMigrationLoading, setIsMigrationLoading] = useState(false);
+
+  const migrate = async amount => {
+    try {
+      setIsMigrationLoading(true);
+      const migrateTx = await propulsorV1Contract.withdraw();
+      const migrateTxWait = migrateTx.wait();
+
+      toast.promise(
+        migrateTxWait,
+        {
+          loading: 'Migration in progress',
+          success: 'Successfully migrated',
+          error: 'An has error occurred during your migration',
+        },
+        {
+          style: { minWidth: '215px', maxWidth: '400px' },
+        }
+      );
+
+      const migrateResult = await migrateTxWait;
+      setIsMigrationLoading(false);
+
+      if (migrateResult?.status === 1) {
+        refreshBalance();
+        refreshStakingInfos();
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.reason || err.message) toast.error(capitalize(err.reason || err.message));
+
+      setIsMigrationLoading(false);
+    }
+  };
+
   /************* withdraw **************/
 
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
@@ -147,7 +193,7 @@ const Staking = () => {
   const withdraw = async amount => {
     try {
       setIsWithdrawLoading(true);
-      const withdrawTx = await propulsorContract.withdraw();
+      const withdrawTx = await propulsorV2Contract.withdraw();
       const withdrawTxWait = withdrawTx.wait();
 
       toast.promise(
@@ -212,6 +258,8 @@ const Staking = () => {
     if (!account) {
       setIsErrored(true);
       setAmount(0);
+
+      setAmountToMigrate(0);
       setStakedAmount(0);
       setEarnedAmount(0);
     }
@@ -285,6 +333,22 @@ const Staking = () => {
                     <>Withdraw</>
                   )}
                 </button>
+                {' '}
+                {amountToMigrate > 0 &&
+                  <button
+                    className={`btn ${(isMigrationLoading || !amountToMigrate || amountToMigrate <= 0) && 'disabled'}`}
+                    disabled={isMigrationLoading || !amountToMigrate || amountToMigrate <= 0}
+                    onClick={migrate}
+                  >
+                    {isWithdrawLoading ? (
+                      <>
+                        Loading <i className="fal fa-sun fa-spin"></i>
+                      </>
+                    ) : (
+                      <>Migrate</>
+                    )}
+                  </button>
+                }
               </div>
               <div className="his">
                 <h2 className="ti">Your earned balance</h2>
@@ -298,7 +362,7 @@ const Staking = () => {
               <div className="dep">
                 <fieldset>
                   <label htmlFor="depp" className="ti">
-                    Enter Amount to Stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
+                    Enter the amount to stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
                   </label>
                   <input id="depp" className="in inn" name="amount" type="number" placeholder="0.00000000"
                     disabled={!account} value={amount} onChange={e => onAmountChange(e)} />

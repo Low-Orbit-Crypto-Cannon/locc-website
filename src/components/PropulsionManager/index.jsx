@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { SET_IS_PROPELLED } from 'src/store';
-import { LOCC_PROPULSOR, LOCC_TOKEN_DECIMALS } from 'src/constants';
+import { LOCC_PROPULSOR_V2, LOCC_TOKEN_DECIMALS } from 'src/constants';
 import { useActiveWeb3React } from 'src/hooks';
 import { usePropulsorContract } from 'src/hooks/useContract';
 import { useDispatch } from 'react-redux';
@@ -11,7 +11,7 @@ export default function PropulsionManager({ children }) {
   
   const { chainId } = useActiveWeb3React();
 
-  const propulsorContractAddr = LOCC_PROPULSOR[chainId];
+  const propulsorContractAddr = LOCC_PROPULSOR_V2[chainId];
   const propulsorContract = usePropulsorContract(propulsorContractAddr);
 
   const stakerPropelledTopic = propulsorContract.filters.StakerPropelled().topics[0];
