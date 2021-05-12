@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useSound } from 'use-sound';
@@ -12,8 +12,7 @@ import {
   AVERAGE_BLOCK_TIME_IN_SECS,
   LOCC_API_SUMMARY_ENDPOINT,
   UNISWAP_BUY_LINK,
-  TELEGRAM_LINK,
-  UNICRYPT_BUY_LINK,
+  TELEGRAM_LINK
 } from 'src/constants';
 import { utils } from 'ethers';
 import { getEtherscanLink, shortenAddress } from 'src/utils';
@@ -21,7 +20,6 @@ import axios from 'axios';
 
 import MoonSound from 'src/assets/sounds/moon.mp3';
 
-import UnicryptSvg from 'src/assets/images/unicrypt.svg';
 import PlanetBg from 'src/assets/images/planet.png';
 import WinnerSvg from 'src/assets/images/winner.svg';
 import MoonImg from 'src/assets/images/moon.png';
@@ -42,15 +40,19 @@ const MoonSoundWrapper = () => {
 };
 
 const Home = () => {
-  /************* anchors **************/
-  const currentLocation = window.location.href;
-  const hasAnchor = currentLocation.includes('/#');
-  if (hasAnchor) {
-    const anchorId = `${currentLocation.substring(currentLocation.indexOf('#') + 1)}`;
-    const anchorEl = document.getElementById(anchorId);
-    if (anchorEl) anchorEl.scrollIntoView({ behavior: 'smooth' });
-  }
 
+  /************* anchors **************/
+
+  useLayoutEffect(() => {
+    const currentLocation = window.location.href;
+    const hasAnchor = currentLocation.includes('/#');
+    if (hasAnchor) {
+      const anchorId = `${currentLocation.substring(currentLocation.indexOf('#') + 1)}`;
+      const anchorEl = document.getElementById(anchorId);
+      if (anchorEl) anchorEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+    
   const { account, chainId, library } = useActiveWeb3React();
 
   const tokenContractAddr = LOCC_TOKEN[chainId];
@@ -286,9 +288,8 @@ const Home = () => {
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
           </div>
-          <a href={UNICRYPT_BUY_LINK} target="_blank" className="btn" style={{ paddingTop: 12, paddingBottom: 18 }}>
-            <img src={UnicryptSvg} width={24} style={{ top: 3, marginRight: 4 }} /> Unicrypt Presale <i className="fal fa-arrow-right"></i>
-            {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
+          <a href={UNISWAP_BUY_LINK} target="_blank" className="btn">
+            Buy $LOCC 🦄 <i className="fal fa-arrow-right"></i>
           </a>
 
           <Link id="propulsator-link" to="/staking" className="btn-propulsor go">
@@ -548,9 +549,8 @@ const Home = () => {
               </p>
               <p style={{ fontStyle: 'italic' }}>"If you invested $100 in SafeMoon at launch it would now be worth 8 million dollars."</p>
             </div>
-            <a href={UNICRYPT_BUY_LINK} target="_blank" className="btn">
-              🦄 Unicrypt Presale <i className="fal fa-arrow-right"></i>
-              {/* Buy $LOCC <i className="fal fa-arrow-right"></i> */}
+            <a href={UNISWAP_BUY_LINK} target="_blank" className="btn">
+              Buy $LOCC 🦄 <i className="fal fa-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -611,27 +611,8 @@ const Home = () => {
               </h3>
               <div className="p">
                 <p>
-                  You will be able to acquire $LOCC from Wednesday May 12, 2021 at 18:00 UTC{' '}
-                  <span style={{ fontSize: '0.85em' }}>
-                    (
-                    <a href="https://etherscan.io/block/countdown/12421121" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                      block #12421121
-                    </a>
-                    )
-                  </span>{' '}
-                  during our presale on the Unicrypt platform.
-                  <br />
-                  You can access our 🦄 Unicrypt Presale by{' '}
-                  <a href={UNICRYPT_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>
-                    clicking here
-                  </a>
-                  .
-                </p>
-
-                <p style={{ marginTop: 12 }}>
-                  Once the presale is completed, the Unicrypt platform will automatically create our Uniswap pool.
-                  <br />
-                  You will then be able to purchase $LOCC directly from Uniswap. It will also be possible to purchase $LOCC from CEX partners few days later.
+                  You can buy $LOCC directly from 🦄 Uniswap V2 by <a href={UNISWAP_BUY_LINK} target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>clicking here</a>. ❗ <span style={{fontWeight: 'bold'}}>You need to set your slippage to <span style={{textDecoration: 'underline'}}>at least 12%</span></span>.<br/>
+                  You can view the live statistics of the $LOCC token on our <a href="https://www.dextools.io/app/uniswap/pair-explorer/0xc12051d9c41d99b01906cf53d9f40af8026b9021" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>DexTools page</a>.
                 </p>
 
                 <p style={{ marginTop: 12 }}>
