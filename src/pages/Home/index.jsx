@@ -198,7 +198,7 @@ const Home = () => {
 
     const refreshInterval = setInterval(() => {
       refreshTimer();
-    }, 6000);
+    }, 9500);
 
     return () => clearInterval(refreshInterval);
   }, [lastPropulsionBlock, blocksBetweenPropulsion]);
@@ -256,7 +256,7 @@ const Home = () => {
     const refreshInterval = setInterval(() => {
       refreshStats();
       refreshFuelToWin({ preventReset: true });
-    }, 8000);
+    }, 15000);
 
     return () => clearInterval(refreshInterval);
   }, [account, chainId]);
