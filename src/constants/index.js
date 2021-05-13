@@ -26,8 +26,6 @@ export const LOCC_PROPULSOR_V1 = {
   [ChainId.ROPSTEN]: '0xb3EA82a250B7E4f11e445246deF72678114db452',
 };
 
-// (ROPSTEN) LOCC_PROPULSOR V1: 0xb3EA82a250B7E4f11e445246deF72678114db452
-
 export const getLoccToken = chainId => {
   return new Token(chainId, LOCC_TOKEN[chainId], 18, 'LOCC', 'Locc');
 };

@@ -30,15 +30,20 @@ const Staking = () => {
   const [minStakingToBePropelled, setMinStakingToBePropelled] = useState(0);
 
   const refreshEarnedAmount = () => {
-    propulsorV2Contract.getEarnedAmountByAddr(account).then(earnedAmount => {
-      const earnedAmountFormat = parseFloat(utils.formatUnits(earnedAmount, 18));
-      setEarnedAmount(earnedAmountFormat);
+    propulsorV2Contract.getEarnedAmountByAddr(account).then(async (earnedAmountV2) => {
+      const earnedAmountV2Format = parseFloat(utils.formatUnits(earnedAmountV2, 18));
+
+      const earnedAmountV1 = await propulsorV1Contract.getEarnedAmountByAddr(account);
+      const earnedAmountV1Format = parseFloat(utils.formatUnits(earnedAmountV1, 18)) ?? 0;
+      
+      setEarnedAmount(earnedAmountV2Format + earnedAmountV1Format);
     });
   }
 
   const refreshStakingInfos = () => {
     propulsorV2Contract.getMinStakingToBePropelled().then(minStakingToBePropelled => {
-      const minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
+      const _minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
+      const minStakingToBePropelledFormat = (_minStakingToBePropelledFormat * 1.10).toFixed(3);
       setMinStakingToBePropelled(minStakingToBePropelledFormat);
     });
 
@@ -298,7 +303,8 @@ const Staking = () => {
               If you're the winner, tokens will be directly sent to your wallet.
             </p>
             <p className="alert-info">
-              A minimum deposit of <span style={{ fontWeight: 600 }}>{minStakingToBePropelled} LOCC</span> is required to join the party!
+              A minimum deposit of <span style={{ fontWeight: 600 }}>{minStakingToBePropelled} LOCC</span>{' '}
+              <span style={{textDecoration: 'underline'}}>including fees</span> is required to join the party!<br/>
             </p>
           </div>
           <div id="dp">
@@ -362,7 +368,7 @@ const Staking = () => {
               <div className="dep">
                 <fieldset>
                   <label htmlFor="depp" className="ti">
-                    Enter the amount to stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
+                    Enter an amount to stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
                   </label>
                   <input id="depp" className="in inn" name="amount" type="number" placeholder="0.00000000"
                     disabled={!account} value={amount} onChange={e => onAmountChange(e)} />

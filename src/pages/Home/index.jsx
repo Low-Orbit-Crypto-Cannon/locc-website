@@ -698,6 +698,25 @@ const Home = () => {
                 </p>
               </div>
             </li>
+
+            <li>
+              <h3 className="open">
+                How to migrate to the Low Orbit Propulsor Contract <span style={{ fontSize: '0.85em' }}>(v2)</span> ? <i className="fal fa-plus"></i>
+              </h3>
+              <div className="p">
+                <p>
+                  It's very simple, if you already have your $LOCC staked on the first version of the Low Orbit Propulsor Contract <span style={{ fontSize: '0.85em' }}>(v1)</span>,{' '}
+                  a <a href="https://imgur.com/a/xgEPzVZ" target="_blank" style={{ color: '#007bff', textDecoration: 'underline' }}>migrate</a> button should appear on the{' '}
+                  <Link to="/staking" style={{ color: '#007bff', textDecoration: 'underline' }}>
+                    staking page
+                  </Link>{' '}
+                  . You must click on it to remove your $LOCC from the old contract.
+                </p>
+                <p style={{ marginTop: 12 }}>
+                  It's done, you just have to <span style={{fontWeight: 'bold'}}>restake your $LOCC on the new contract by hitting the deposit button</span> and you are ready again for the next propulsion.
+                </p>
+              </div>
+            </li>
           </ul>
         </div>
         <div style={{ fontSize: '1em', fontWeight: 'bold', marginTop: 42 }}>
