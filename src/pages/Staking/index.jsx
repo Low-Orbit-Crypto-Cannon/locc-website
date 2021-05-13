@@ -43,7 +43,7 @@ const Staking = () => {
   const refreshStakingInfos = () => {
     propulsorV2Contract.getMinStakingToBePropelled().then(minStakingToBePropelled => {
       const _minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
-      const minStakingToBePropelledFormat = (_minStakingToBePropelledFormat * 1.10).toFixed(3);
+      const minStakingToBePropelledFormat = (_minStakingToBePropelledFormat * 1.12).toFixed(3);
       setMinStakingToBePropelled(minStakingToBePropelledFormat);
     });
 
