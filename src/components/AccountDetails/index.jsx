@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { SUPPORTED_WALLETS } from 'src/constants';
 import { injected, walletconnect, walletlink, fortmatic, portis } from 'src/connectors';
 import { ExternalLink as LinkIcon } from 'react-feather';
-import { getEtherscanLink, shortenAddress, shortenRefId } from 'src/utils';
+import { getEtherscanLink, shortenAddress } from 'src/utils';
 import { useActiveWeb3React } from 'src/hooks';
 
 import CloseSvg from 'src/assets/images/x.svg';

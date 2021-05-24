@@ -1,3 +1,4 @@
+import React from 'react';
 import { Contract } from '@ethersproject/contracts';
 import { getAddress } from '@ethersproject/address';
 import { AddressZero } from '@ethersproject/constants';
@@ -50,8 +51,8 @@ export function shortenAddress(address, chars = 4) {
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`;
 }
 
-export function shortenRefId(refId, chars = 10) {
-  return `${refId.substring(0, chars + 2)}...${refId.substring(refId.length - chars)}`;
+export function shortenHash(hash, chars = 4) {
+  return `${hash.substring(0, chars + 2)}`;
 }
 
 // add 10%
@@ -95,4 +96,74 @@ export function getContract(address, ABI, library, account) {
 
 export function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+export const TX_SUBJECTS = {
+  APPROVE: 'Approve',
+  DEPOSIT: 'Deposit',
+  WITHDRAW: 'Withdraw',
+  MIGRATE: 'Migrate',
+};
+
+export function getInitialMsg(chainId, hash, subject) {
+  switch (subject) {
+    case TX_SUBJECTS.APPROVE:
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div>
+            <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+              Approval in progress... <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+            </a>
+          </div>
+          <div style={{ fontSize: '0.8rem', color: '#f3c764' }}>Don't forget to deposit once confirmed!</div>
+        </div>
+      );
+    case TX_SUBJECTS.DEPOSIT:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Deposit in progress... <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+    case TX_SUBJECTS.WITHDRAW:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Withdraw in progress... <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+    case TX_SUBJECTS.MIGRATE:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Migration in progress... <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+  }
+}
+
+export function getSuccessMsg(chainId, hash, subject) {
+  switch (subject) {
+    case TX_SUBJECTS.APPROVE:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Successfully approved <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+    case TX_SUBJECTS.DEPOSIT:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Successfully deposited <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+    case TX_SUBJECTS.WITHDRAW:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Successfully withdrawn <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+    case TX_SUBJECTS.MIGRATE:
+      return (
+        <a href={getEtherscanLink(chainId, hash, 'transaction')} target="_blank">
+          Successfully migrated <span style={{ fontSize: '0.85rem' }}>#{shortenHash(hash)}</span> <i className="fal fa-external-link-alt" style={{ marginLeft: 2 }}></i>
+        </a>
+      );
+  }
 }

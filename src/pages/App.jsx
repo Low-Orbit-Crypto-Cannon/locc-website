@@ -14,6 +14,9 @@ import Web3ReactManager from 'src/components/Web3ReactManager';
 import PropulsionManager from 'src/components/PropulsionManager';
 import WalletManager from 'src/components/Modals/WalletManager';
 
+import BlockUpdater from 'src/components/Updaters/BlockUpdater';
+import TransactionUpdater from 'src/components/Updaters/TransactionUpdater';
+
 const App = () => {
   return (
     <>
@@ -28,8 +31,11 @@ const App = () => {
           error: { duration: 4000 },
         }}
       />
-      <SoundHelper />
 
+      <BlockUpdater />
+      <TransactionUpdater />
+      
+      <SoundHelper />
       <Header />
 
       <Web3ReactManager>

@@ -1,9 +1,10 @@
-import { SET_IS_PROPELLED, SET_LOCC_BALANCE, SET_SOUND_ENABLED } from '../mutations';
+import { SET_BLOCK_NUMBER, SET_IS_PROPELLED, SET_LOCC_BALANCE, SET_SOUND_ENABLED } from '../mutations';
 
 const initialState = {
   loccBalance: 0,
   isPropelled: false,
-  soundEnabled: true
+  soundEnabled: true,
+  blockNumber: {},
 };
 
 export default (state = initialState, action) => {
@@ -11,17 +12,24 @@ export default (state = initialState, action) => {
     case SET_LOCC_BALANCE:
       return {
         ...state,
-        loccBalance: action.balance
+        loccBalance: action.balance,
       };
     case SET_IS_PROPELLED:
       return {
         ...state,
-        isPropelled: action.isPropelled
+        isPropelled: action.isPropelled,
       };
     case SET_SOUND_ENABLED:
       return {
         ...state,
-        soundEnabled: action.enabled
+        soundEnabled: action.enabled,
+      };
+    case SET_BLOCK_NUMBER:
+      return {
+        ...state,
+        blockNumber: {
+          [action.chainId]: typeof state.blockNumber[action.chainId] !== 'number' ? action.blockNumber : Math.max(action.blockNumber, state.blockNumber[action.chainId])
+        },
       };
     default:
       return state;

@@ -3,17 +3,21 @@ import { useLoccBalance } from 'src/hooks/useLoccBalance';
 import { LOCC_TOKEN_DECIMALS, LOCC_TOKEN, LOCC_PROPULSOR_V2, LOCC_PROPULSOR_V1 } from 'src/constants';
 import { useTokenContract, usePropulsorContract } from 'src/hooks/useContract';
 import { useActiveWeb3React } from 'src/hooks';
+import { usePendingTransactions, useTransactionAdder } from 'src/hooks/transactions';
 import { utils } from 'ethers';
+import { getInitialMsg, TX_SUBJECTS } from 'src/utils';
 import toast from 'react-hot-toast';
 import capitalize from 'capitalize-sentence';
 
 import Web3Status from 'src/components/Web3Status';
 
 import LoccTokenLogo from 'src/assets/images/logo-locc-token.png';
+import { useSelector } from 'react-redux';
 
 const Staking = () => {
   const { account, chainId } = useActiveWeb3React();
   const { loccBalance, refreshBalance } = useLoccBalance();
+  const addTransaction = useTransactionAdder();
 
   const tokenContractAddr = LOCC_TOKEN[chainId];
   const tokenContract = useTokenContract(tokenContractAddr);
@@ -27,24 +31,27 @@ const Staking = () => {
   const [amountToMigrate, setAmountToMigrate] = useState(0);
   const [stakedAmount, setStakedAmount] = useState(0);
   const [earnedAmount, setEarnedAmount] = useState(0);
+  const [minStakingToBePropelledWithFees, setMinStakingToBePropelledWithFees] = useState(0);
   const [minStakingToBePropelled, setMinStakingToBePropelled] = useState(0);
 
   const refreshEarnedAmount = () => {
-    propulsorV2Contract.getEarnedAmountByAddr(account).then(async (earnedAmountV2) => {
+    propulsorV2Contract.getEarnedAmountByAddr(account).then(async earnedAmountV2 => {
       const earnedAmountV2Format = parseFloat(utils.formatUnits(earnedAmountV2, 18));
 
       const earnedAmountV1 = await propulsorV1Contract.getEarnedAmountByAddr(account);
       const earnedAmountV1Format = parseFloat(utils.formatUnits(earnedAmountV1, 18)) ?? 0;
-      
+
       setEarnedAmount(earnedAmountV2Format + earnedAmountV1Format);
     });
-  }
+  };
 
   const refreshStakingInfos = () => {
     propulsorV2Contract.getMinStakingToBePropelled().then(minStakingToBePropelled => {
-      const _minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
-      const minStakingToBePropelledFormat = (_minStakingToBePropelledFormat * 1.12).toFixed(3);
+      const minStakingToBePropelledFormat = parseFloat(utils.formatUnits(minStakingToBePropelled, 18));
       setMinStakingToBePropelled(minStakingToBePropelledFormat);
+
+      const minStakingToBePropelledWithFeesFormat = (minStakingToBePropelledFormat * 1.12).toFixed(3);
+      setMinStakingToBePropelledWithFees(minStakingToBePropelledWithFeesFormat);
     });
 
     if (account) {
@@ -57,7 +64,7 @@ const Staking = () => {
         const amountToMigrateFormat = parseFloat(utils.formatUnits(amountToMigrate, 18));
         setAmountToMigrate(amountToMigrateFormat);
       });
-  
+
       refreshEarnedAmount();
     }
   };
@@ -73,32 +80,22 @@ const Staking = () => {
     const allowance = await tokenContract.allowance(account, propulsorV2Contract.address);
     const allowanceFormat = utils.formatUnits(allowance, 18);
 
-    const contractAllowed = parseFloat(allowanceFormat) !== 0;
+    const contractAllowed = parseFloat(allowanceFormat) >= minStakingToBePropelled;
     setContractAllowed(contractAllowed);
     setIsDepositLoading(false);
   };
 
   const requestAllowance = async () => {
-    const wei = utils.parseEther('1000');
+    const wei = utils.parseEther('1000000000');
 
     try {
       setIsDepositLoading(true);
       const approveTx = await tokenContract.approve(propulsorV2Contract.address, wei);
-      const approveTxWait = approveTx.wait();
 
-      toast.promise(
-        approveTxWait,
-        {
-          loading: 'Approvement in progress',
-          success: 'Successfully approved',
-          error: 'An has error occurred during your approval',
-        },
-        {
-          style: { minWidth: '215px', maxWidth: '400px' },
-        }
-      );
+      toast.loading(getInitialMsg(chainId, approveTx.hash, TX_SUBJECTS.APPROVE), { id: approveTx.hash, style: { minWidth: '215px', maxWidth: '400px' } });
+      addTransaction(approveTx, TX_SUBJECTS.APPROVE);
 
-      const approveResult = await approveTxWait;
+      const approveResult = await approveTx.wait();
       setIsDepositLoading(false);
 
       if (approveResult?.status === 1) {
@@ -122,27 +119,17 @@ const Staking = () => {
     try {
       setIsDepositLoading(true);
       const depositTx = await propulsorV2Contract.deposit(wei);
-      const depositTxWait = depositTx.wait();
 
-      toast.promise(
-        depositTxWait,
-        {
-          loading: 'Deposit in progress',
-          success: 'Successfully deposited',
-          error: 'An has error occurred during your deposit',
-        },
-        {
-          style: { minWidth: '215px', maxWidth: '400px' },
-        }
-      );
+      toast.loading(getInitialMsg(chainId, depositTx.hash, TX_SUBJECTS.DEPOSIT), { id: depositTx.hash, style: { minWidth: '215px', maxWidth: '400px' } });
+      addTransaction(depositTx, TX_SUBJECTS.DEPOSIT);
 
-      const depositResult = await depositTxWait;
+      const depositResult = await depositTx.wait();
       setIsDepositLoading(false);
 
       if (depositResult?.status === 1) {
         setAmount(0);
         setIsErrored(true);
-        
+
         refreshBalance();
         refreshStakingInfos();
       }
@@ -158,25 +145,15 @@ const Staking = () => {
 
   const [isMigrationLoading, setIsMigrationLoading] = useState(false);
 
-  const migrate = async amount => {
+  const migrate = async () => {
     try {
       setIsMigrationLoading(true);
       const migrateTx = await propulsorV1Contract.withdraw();
-      const migrateTxWait = migrateTx.wait();
 
-      toast.promise(
-        migrateTxWait,
-        {
-          loading: 'Migration in progress',
-          success: 'Successfully migrated',
-          error: 'An has error occurred during your migration',
-        },
-        {
-          style: { minWidth: '215px', maxWidth: '400px' },
-        }
-      );
+      toast.loading(getInitialMsg(chainId, migrateTx.hash, TX_SUBJECTS.MIGRATE), { id: migrateTx.hash, style: { minWidth: '215px', maxWidth: '400px' } });
+      addTransaction(migrateTx, TX_SUBJECTS.MIGRATE);
 
-      const migrateResult = await migrateTxWait;
+      const migrateResult = await migrateTx.wait();
       setIsMigrationLoading(false);
 
       if (migrateResult?.status === 1) {
@@ -195,25 +172,15 @@ const Staking = () => {
 
   const [isWithdrawLoading, setIsWithdrawLoading] = useState(false);
 
-  const withdraw = async amount => {
+  const withdraw = async () => {
     try {
       setIsWithdrawLoading(true);
       const withdrawTx = await propulsorV2Contract.withdraw();
-      const withdrawTxWait = withdrawTx.wait();
 
-      toast.promise(
-        withdrawTxWait,
-        {
-          loading: 'Withdraw in progress',
-          success: 'Successfully withdrawn',
-          error: 'An has error occurred during your withdraw',
-        },
-        {
-          style: { minWidth: '215px', maxWidth: '400px' },
-        }
-      );
+      toast.loading(getInitialMsg(chainId, withdrawTx.hash, TX_SUBJECTS.WITHDRAW), { id: withdrawTx.hash, style: { minWidth: '215px', maxWidth: '400px' } });
+      addTransaction(withdrawTx, TX_SUBJECTS.WITHDRAW);
 
-      const withdrawResult = await withdrawTxWait;
+      const withdrawResult = await withdrawTx.wait();
       setIsWithdrawLoading(false);
 
       if (withdrawResult?.status === 1) {
@@ -234,17 +201,18 @@ const Staking = () => {
   const [isErrored, setIsErrored] = useState(true);
 
   const onAmountChange = e => {
-    const _amount = e.target.value;
+    const rawAmount = e.target.value;
+    const parsedAmount = parseFloat(rawAmount);
 
-    if (_amount < 0) {
+    if (parsedAmount < 0) {
       setIsErrored(true);
       return;
     }
 
-    if (_amount > 0 && _amount <= loccBalance && _amount >= minStakingToBePropelled) setIsErrored(false);
+    if (parsedAmount > 0 && parsedAmount <= loccBalance && parsedAmount >= minStakingToBePropelledWithFees) setIsErrored(false);
     else setIsErrored(true);
 
-    setAmount(_amount);
+    setAmount(rawAmount);
   };
 
   const onSubmit = () => {
@@ -256,10 +224,43 @@ const Staking = () => {
     deposit(amount);
   };
 
+  /************* pending **************/
+
+  const [anyStateTxPending, setAnyStateTxPending] = useState(false);
+  const pendingTransactions = usePendingTransactions();
+
+  useEffect(() => {
+    const pendingTransactionsKeys = Object.keys(pendingTransactions);
+    if (pendingTransactionsKeys?.length > 0) setAnyStateTxPending(true);
+
+    pendingTransactionsKeys.forEach(pendingTxHash => {
+      const pendingTx = pendingTransactions[pendingTxHash];
+
+      const now = new Date().getTime();
+      if (pendingTx.addedTime <= new Date(now + (86400 * 1000))) {
+        toast.loading(getInitialMsg(chainId, pendingTx.hash, pendingTx.subject), { id: pendingTx.hash, style: { minWidth: '215px', maxWidth: '400px' } });
+      }
+    });
+  }, []);
+
+  const transactions = useSelector(state => state.transactions);
+
+  useEffect(() => {
+    if (!account || !anyStateTxPending) return;
+    if (!contractAllowed) checkContractAllowance();
+
+    setAmount(0);
+    setIsErrored(true);
+
+    refreshBalance();
+    refreshStakingInfos();
+  }, [transactions]);
+
   /************* init **************/
 
   useEffect(() => {
     if (account) checkContractAllowance();
+
     if (!account) {
       setIsErrored(true);
       setAmount(0);
@@ -295,16 +296,18 @@ const Staking = () => {
             <p>
               Stake your <span style={{ fontWeight: 600 }}>LOCC</span> on the Propulsor Contract and take your chance to participate in the next propulsion wave,
               <br />
-              <span style={{ fontWeight: 600 }}>you might be the next astronaut who will win all of the wave collected fees.</span>.
-              <br/>
+              <span style={{ fontWeight: 600 }}>you might be the next astronaut who will win all of the wave collected fees.</span>
+              <br />
               Everyone has an equal chance to win!
             </p>
-            <p style={{ marginTop: 8, fontStyle: 'italic' }}>
-              If you're the winner, tokens will be directly sent to your wallet.
-            </p>
+            <p style={{ marginTop: 8, fontStyle: 'italic' }}>If you're the winner, tokens will be directly sent to your wallet.</p>
             <p className="alert-info">
-              A minimum deposit of <span style={{ fontWeight: 600 }}>{minStakingToBePropelled} LOCC</span>{' '}
-              <span style={{textDecoration: 'underline'}}>including fees</span> is required to join the party!<br/>
+              A minimum deposit of <span style={{ fontWeight: 600 }}>{minStakingToBePropelledWithFees} LOCC</span> <span style={{ textDecoration: 'underline' }}>including fees</span> is
+              required to join the party 🎉
+              <br />
+              <span style={{ fontSize: '0.9em' }}>
+                This will stake the <span style={{ fontWeight: 600 }}>{minStakingToBePropelled} LOCC</span> required to be an Astronaut waiting on deck!
+              </span>
             </p>
           </div>
           <div id="dp">
@@ -338,9 +341,8 @@ const Staking = () => {
                   ) : (
                     <>Withdraw</>
                   )}
-                </button>
-                {' '}
-                {amountToMigrate > 0 &&
+                </button>{' '}
+                {amountToMigrate > 0 && (
                   <button
                     className={`btn ${(isMigrationLoading || !amountToMigrate || amountToMigrate <= 0) && 'disabled'}`}
                     disabled={isMigrationLoading || !amountToMigrate || amountToMigrate <= 0}
@@ -354,7 +356,7 @@ const Staking = () => {
                       <>Migrate</>
                     )}
                   </button>
-                }
+                )}
               </div>
               <div className="his">
                 <h2 className="ti">Your earned balance</h2>
@@ -370,8 +372,7 @@ const Staking = () => {
                   <label htmlFor="depp" className="ti">
                     Enter an amount to stake {/* <img src={LoccTokenLogo} className="lcc" alt="LOCC" /> */}
                   </label>
-                  <input id="depp" className="in inn" name="amount" type="number" placeholder="0.00000000"
-                    disabled={!account} value={amount} onChange={e => onAmountChange(e)} />
+                  <input id="depp" className="in inn" name="amount" type="number" placeholder="0.00000000" disabled={!account} value={amount} onChange={e => onAmountChange(e)} />
                   <span></span>
                   <button className={`btn ${(isDepositLoading || isErrored) && 'disabled'}`} disabled={isDepositLoading || isErrored} onClick={onSubmit}>
                     {isDepositLoading ? (

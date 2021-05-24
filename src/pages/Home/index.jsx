@@ -280,10 +280,10 @@ const Home = () => {
           </h1>
 
           <div className="tx">
-            <p>Low Orbit Crypto Cannon is a crypto deflationary token made for the community, owned by the community, with a fair pre-sale in which everyone can participate.</p>
+            <p>Low Orbit Crypto Cannon is a crypto deflationary token made for the community and owned by the community.</p>
             <p style={{ marginTop: 10 }}>
               Ruled by simple, yet powerful and efficient smart contracts on the Ethereum blockchain: Fees are generated from each trade, partially burned, and then one staking
-              Astronaut is selected for propulsion every 138 ETH blocks. &nbsp;
+              Astronaut is selected for propulsion every 276 ETH blocks. &nbsp;
               <span style={{ fontWeight: 'bold', color: '#f4cf63' }}>This lucky Astronaut receives all of the collected fees!</span>
             </p>
             <p className="join-us">Join us on our journey to the solar system 🌞 !</p>
@@ -525,7 +525,7 @@ const Home = () => {
             <div className="p">
               <p>
                 The total supply of the $LOCC token is 1000. As for the circulation supply, a good orbit cannon needs a proper economy: almost every $LOCC minted{' '}
-                <span style={{ fontSize: '0.8em' }}>(800)</span> will be in circulation and will be completely used in the public sale.
+                <span style={{ fontSize: '0.8em' }}>(800)</span> are in circulation.
                 <br />
               </p>
               <dl>
@@ -538,7 +538,7 @@ const Home = () => {
                   <span style={{ fontSize: '0.8em' }}>(5%)</span>
                 </dd>
                 <dd>
-                  Remaining treasury funds will be used in the public presale and added over the Uniswap liquidity{' '}
+                  Remaining treasury funds has been used in the public presale and added over the Uniswap liquidity{' '}
                   <span style={{ fontSize: '0.85em', fontWeight: 'bold' }}>(locked liquidity for 1 year)</span>{' '}
                   <i className="fal fa-long-arrow-alt-right" style={{ top: 1, marginLeft: 2, marginRight: 2 }}></i> 800 $LOCC <span style={{ fontSize: '0.8em' }}>(80%)</span>
                 </dd>
@@ -573,7 +573,7 @@ const Home = () => {
                   </ul>
                 </p>
                 <p style={{ marginTop: 12 }}>
-                  Every 138 ETH blocks <span style={{ fontSize: '0.85em' }}>(about 30 minutes)</span>, the Low Orbit Propulsor Contract starts to power up and loads with the tokens
+                  Every 276 ETH blocks <span style={{ fontSize: '0.85em' }}>(about 30 minutes)</span>, the Low Orbit Propulsor Contract starts to power up and loads with the tokens
                   collected from the transfer fees, ready to propel one of our hodlers into Orbit when the next propulsion will trigger.
                 </p>
               </div>
@@ -630,11 +630,11 @@ const Home = () => {
 
             <li>
               <h3 className="open">
-                How much liquidity will be locked? <i className="fal fa-plus"></i>
+                How much liquidity has been locked? <i className="fal fa-plus"></i>
               </h3>
               <div className="p">
                 <p>
-                  <strong>60%</strong> of the raised funds will be locked for <strong>one year</strong>.
+                  <strong>60%</strong> of the raised funds has been locked for <strong>one year</strong>.
                 </p>
               </div>
             </li>
