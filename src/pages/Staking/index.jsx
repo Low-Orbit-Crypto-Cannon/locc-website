@@ -73,20 +73,19 @@ const Staking = () => {
 
   /************* allowance **************/
 
-  const [contractAllowed, setContractAllowed] = useState(false);
+  const [allowanceAmount, setAllowanceAmount] = useState(0);
 
   const checkContractAllowance = async () => {
     setIsDepositLoading(true);
     const allowance = await tokenContract.allowance(account, propulsorV2Contract.address);
     const allowanceFormat = utils.formatUnits(allowance, 18);
 
-    const contractAllowed = parseFloat(allowanceFormat) >= minStakingToBePropelled;
-    setContractAllowed(contractAllowed);
+    setAllowanceAmount(parseFloat(allowanceFormat));
     setIsDepositLoading(false);
   };
 
   const requestAllowance = async () => {
-    const wei = utils.parseEther('1000000000');
+    const wei = utils.parseEther('100000000');
 
     try {
       setIsDepositLoading(true);
@@ -99,7 +98,7 @@ const Staking = () => {
       setIsDepositLoading(false);
 
       if (approveResult?.status === 1) {
-        setContractAllowed(true);
+        checkContractAllowance();
       }
     } catch (err) {
       console.error(err);
@@ -216,7 +215,7 @@ const Staking = () => {
   };
 
   const onSubmit = () => {
-    if (!contractAllowed) {
+    if (allowanceAmount < minStakingToBePropelled || allowanceAmount < amount) {
       requestAllowance();
       return;
     }
@@ -247,7 +246,8 @@ const Staking = () => {
 
   useEffect(() => {
     if (!account || !anyStateTxPending) return;
-    if (!contractAllowed) checkContractAllowance();
+
+    checkContractAllowance();
 
     setAmount(0);
     setIsErrored(true);
@@ -283,7 +283,7 @@ const Staking = () => {
 
   let depositBtnText = ``;
   if (isErrored) depositBtnText = 'Invalid amount';
-  else if (!contractAllowed) depositBtnText = 'Approve';
+  else if (allowanceAmount < minStakingToBePropelled) depositBtnText = 'Approve';
   else depositBtnText = 'Deposit 🚀';
 
   return (

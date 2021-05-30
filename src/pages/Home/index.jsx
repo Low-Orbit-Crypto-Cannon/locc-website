@@ -315,6 +315,7 @@ const Home = () => {
                 </strong>
               </div>
             </li>
+            {/*
             <li>
               <div className="bck b-r">
                 <i className="fal fa-money-bill-wave"></i>
@@ -324,6 +325,7 @@ const Home = () => {
                 <strong className="c-r">{hodlers}</strong>
               </div>
             </li>
+            */}
             <li>
               <div className="bck b-p">
                 <i className="fal fa-store"></i>
@@ -358,8 +360,8 @@ const Home = () => {
               </>
             )}
           </time>
-          <div className="csh">{fuelToWin.toFixed(LOCC_TOKEN_DECIMALS)} LOCC</div>
-          <div className="sub">Previous Astronauts</div>
+          {(fuelToWin > 0) && <div className="csh">{fuelToWin.toFixed(LOCC_TOKEN_DECIMALS)} LOCC</div>}
+          <div className="sub" style={ fuelToWin <= 0 ? {marginTop: '6em'} : {}}>Previous Astronauts</div>
           <table className="tw">
             <thead>
               <tr>
